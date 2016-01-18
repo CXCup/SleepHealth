@@ -111,7 +111,7 @@ public class MainActivity extends FragmentActivity {
                 switch (position){
                     case 0:
                         txt_home.setTextColor(Color.parseColor("#7badea"));
-                        //im_home.setImageResource(R.mipmap.home);
+                        im_home.setImageResource(R.mipmap.home);
                         break;
                     case 1:
                         txt_mine.setTextColor(Color.parseColor("#7badea"));
@@ -165,7 +165,7 @@ public class MainActivity extends FragmentActivity {
     private void resetImageViewColor(){
 
         im_mine.setImageResource(R.mipmap.me1);
-        //im_home.setImageResource(R.mipmap.home1);
+        im_home.setImageResource(R.mipmap.home1);
         //im_tieshi.setImageResource(R.mipmap.tieshi1);
     }
 
