@@ -26,7 +26,7 @@
                     android:id="@+id/im_home"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@mipmap/home1"/>
+                    android:src="@mipmap/home"/>
                 <TextView
                     android:id="@+id/txt_home"
                     android:layout_width="wrap_content"
@@ -77,7 +77,8 @@
                 <ImageView
                     android:id="@+id/im_tieshi"
                     android:layout_width="32dp"
-                    android:layout_height="32dp" />
+                    android:layout_height="32dp"
+                    android:src="@mipmap/tieshi1"/>
                 <TextView
                     android:id="@+id/txt_tieshi"
                     android:layout_width="wrap_content"

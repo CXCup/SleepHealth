@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity {
 
     private LinearLayout m_home,m_mine,m_tieshi;
     private ImageView im_home,im_mine,im_tieshi;
-    private TextView txt_home,txt_mine,txt_tieshi;
+    private TextView txt_home,txt_mine,txt_tieshi,title;
 
     private ImageView tabline;
 
@@ -78,6 +78,8 @@ public class MainActivity extends FragmentActivity {
         txt_mine = (TextView)findViewById(R.id.txt_mine);
         txt_tieshi = (TextView)findViewById(R.id.txt_tieshi);
 
+        title = (TextView)findViewById(R.id.title);
+
         tabline = (ImageView)findViewById(R.id.tabline);
 
         List<Fragment> list = new ArrayList<>();
@@ -89,13 +91,13 @@ public class MainActivity extends FragmentActivity {
 
         viewPager.setAdapter(viewPagerAdapter);
 
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                LinearLayout.LayoutParams lp = (android.widget.LinearLayout.LayoutParams)tabline.
+                LinearLayout.LayoutParams lp = (android.widget.LinearLayout.LayoutParams) tabline.
                         getLayoutParams();
-                lp.leftMargin = (int)((position+positionOffset)*tablineWidth);
+                lp.leftMargin = (int) ((position + positionOffset) * tablineWidth);
 
                 Log.i("-----------------", lp.leftMargin + "");
 
@@ -108,18 +110,21 @@ public class MainActivity extends FragmentActivity {
                 resetTextViewColor();
                 resetImageViewColor();
 
-                switch (position){
+                switch (position) {
                     case 0:
                         txt_home.setTextColor(Color.parseColor("#7badea"));
                         im_home.setImageResource(R.mipmap.home);
+                        title.setText("首页");
                         break;
                     case 1:
                         txt_mine.setTextColor(Color.parseColor("#7badea"));
                         im_mine.setImageResource(R.mipmap.me);
+                        title.setText("我的");
                         break;
                     case 2:
                         txt_tieshi.setTextColor(Color.parseColor("#7badea"));
-                        //im_tieshi.setImageResource(R.mipmap.tieshi);
+                        im_tieshi.setImageResource(R.mipmap.tieshi);
+                        title.setText("健康贴士");
                         break;
                 }
             }
@@ -166,7 +171,7 @@ public class MainActivity extends FragmentActivity {
 
         im_mine.setImageResource(R.mipmap.me1);
         im_home.setImageResource(R.mipmap.home1);
-        //im_tieshi.setImageResource(R.mipmap.tieshi1);
+        im_tieshi.setImageResource(R.mipmap.tieshi1);
     }
 
     @Override

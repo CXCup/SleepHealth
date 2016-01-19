@@ -1,5 +1,9 @@
 <resources>
 
+    <color name="primary_dark_color">#66009688</color>
+    <color name="primary_color">#ff009688</color>
+    <color name="secondary_color">#ff37474f</color>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
