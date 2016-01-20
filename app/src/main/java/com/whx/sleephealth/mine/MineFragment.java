@@ -1,5 +1,6 @@
 package com.whx.sleephealth.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -46,6 +47,8 @@ public class MineFragment extends Fragment implements View.OnClickListener{
 
         switch (v.getId()){
             case R.id.record:
+                Intent mChart = new Intent(getActivity(),ChartActivity.class);
+                startActivity(mChart);
                 break;
             case R.id.help:
                 break;

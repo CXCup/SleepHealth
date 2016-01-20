@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="no_data">没有有效数据</string>
+    <string name="another_press_to_exit">再按一次退出程序</string>
 </resources>
