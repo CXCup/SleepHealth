@@ -35,8 +35,8 @@ public class TieshiFragment extends Fragment {
         view = inflater.inflate(R.layout.tieshi,container,false);
         lv = (ListView) view.findViewById(R.id.listview);
         data = getData();
-        //MyAdapter adapter = new MyAdapter(this);
-        //lv.setAdapter(adapter);
+        MyAdapter adapter = new MyAdapter(getActivity());
+        lv.setAdapter(adapter);
         return view;
     }
 
