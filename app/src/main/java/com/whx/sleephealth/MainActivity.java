@@ -99,7 +99,7 @@ public class MainActivity extends FragmentActivity {
                         getLayoutParams();
                 lp.leftMargin = (int) ((position + positionOffset) * tablineWidth);
 
-                Log.i("-----------------", lp.leftMargin + "");
+                //Log.i("-----------------", lp.leftMargin + "");
 
                 tabline.setLayoutParams(lp);
             }

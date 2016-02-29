@@ -6,21 +6,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.whx.sleephealth.R;
+import com.whx.sleephealth.adapter.MyAdapter;
 
 /**
  * Created by whx on 2016/1/18.
  */
-public class MineFragment extends Fragment implements View.OnClickListener{
+public class MineFragment extends Fragment{
 
     private View view;
-    private LinearLayout record,helpSleep,alarm;
-    private ImageView touxiang;
-    private TextView userName;
+    private ListView listView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,28 +34,25 @@ public class MineFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initContents(){
-        record = (LinearLayout)view.findViewById(R.id.record);
-        helpSleep = (LinearLayout)view.findViewById(R.id.help);
-        alarm = (LinearLayout)view.findViewById(R.id.alarm);
+        listView = (ListView)view.findViewById(R.id.my_item_list);
+        MyAdapter myAdapter = new MyAdapter(getActivity());
+        listView.setAdapter(myAdapter);
 
-        record.setOnClickListener(this);
-        helpSleep.setOnClickListener(this);
-        alarm.setOnClickListener(this);
-
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent mChart = new Intent(getActivity(),ChartActivity.class);
+                        startActivity(mChart);
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+        });
     }
-    @Override
-    public void onClick(View v) {
 
-        switch (v.getId()){
-            case R.id.record:
-                Intent mChart = new Intent(getActivity(),ChartActivity.class);
-                startActivity(mChart);
-                break;
-            case R.id.help:
-                break;
-            case R.id.alarm:
-                break;
-        }
-    }
 }
