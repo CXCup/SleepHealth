@@ -16,19 +16,23 @@ import android.widget.TimePicker;
 import com.whx.sleephealth.R;
 import com.whx.sleephealth.tieshi.MLog;
 
+import java.util.Date;
+
 /**
  * Created by whx on 2016/1/18.
  */
 public class MainFragment extends Fragment implements View.OnClickListener,TimePicker.OnTimeChangedListener{
 
     private View view;
-    private CircleProgressView circleProgressView;
-    private ImageButton preNight,nextNight;
-    private TextView baogao,suggestion;
 
     private TextView alarmText;
     private Button startBtn;
     private TimePicker timePicker;
+    private int startMin,endMin,startHour,endHour;
+
+    public static String AlarmText;
+    public static Intent intent;
+    public static long startTime;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,25 +41,6 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
         //initContents();
         init();
         return view;
-    }
-
-    private void initContents(){
-        circleProgressView = (CircleProgressView)view.findViewById(R.id.circleView);
-        circleProgressView.setMaxValue(360);
-        circleProgressView.setValue(0);
-        circleProgressView.setValueAnimated(getSleepLength()/4f);
-        circleProgressView.setText((int)(getSleepLength()/60)+" h "+(int)(getSleepLength()%60)+" m");
-
-        preNight = (ImageButton)view.findViewById(R.id.pre_night);
-        preNight.setOnClickListener(this);
-
-        nextNight = (ImageButton)view.findViewById(R.id.nxt_night);
-        nextNight.setOnClickListener(this);
-
-        baogao = (TextView)view.findViewById(R.id.baogao);
-        suggestion = (TextView)view.findViewById(R.id.suggestion);
-        suggestion.setOnClickListener(this);
-
     }
 
     private void init(){
@@ -67,6 +52,10 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
         timePicker = (TimePicker)view.findViewById(R.id.alarm_time);
         timePicker.setIs24HourView(true);
         timePicker.setOnTimeChangedListener(this);
+
+        getAlarmtext(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+        AlarmText = "闹钟："+ startHour +" : "+startMin+" - "+endHour+" : "+endMin;
+        alarmText.setText(AlarmText);
     }
 
     private float getSleepLength(){
@@ -78,8 +67,14 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.start:
-                Intent intent = new Intent(getActivity(),SuggestionActivity.class);
-                startActivity(intent);
+                Date date = new Date();
+                startTime = date.getTime();
+
+                intent = new Intent(getContext(),SleepTimeService.class);
+                getActivity().startService(intent);
+
+                Intent intent1 = new Intent(getActivity(),CloseAlarmActivity.class);
+                startActivity(intent1);
                 break;
         }
     }
@@ -87,7 +82,13 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
     @Override
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
         //Log.d(MLog.TAG,hourOfDay+" : "+minute);
-        int startMin,endMin,startHour,endHour;
+
+        getAlarmtext(hourOfDay,minute);
+
+        AlarmText = "闹钟："+ startHour +" : "+startMin+" - "+endHour+" : "+endMin;
+        alarmText.setText(AlarmText);
+    }
+    private void getAlarmtext(int hourOfDay,int minute){
         if(minute<10){
             startMin = minute + 50;
             endMin = minute + 10;
@@ -104,6 +105,5 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
             startHour = hourOfDay;
             endHour = hourOfDay;
         }
-        alarmText.setText("闹钟："+ startHour +" : "+startMin+" - "+endHour+" : "+endMin);
     }
 }
