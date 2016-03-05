@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".mine.ChartActivity"/>
         <activity android:name=".main.CloseAlarmActivity"/>
+        <activity android:name=".main.ReportActivity"/>
 
         <service android:name=".main.SleepTimeService"/>
     </application>

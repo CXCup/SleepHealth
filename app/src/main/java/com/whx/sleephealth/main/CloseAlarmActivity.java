@@ -36,11 +36,12 @@ public class CloseAlarmActivity extends Activity{
     private GestureDetector gestureDetector;
     private WindowManager windowManager;
     RelativeLayout.LayoutParams layoutParams1,layoutParams2;
-    float layout1Y,layout2Y;
+    private float layout1Y,layout2Y;
     private DigitalClock digitalClock;
     private RelativeLayout layout;
-    Point p;
+    private Point p;
 
+    public static long stopTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,7 +173,7 @@ public class CloseAlarmActivity extends Activity{
 
 
             //Log.d(MLog.TAG, "p.y = " + (p.y) + " y = " + (e2.getY() - e1.getY()));
-            if((e1.getY() - e2.getY())>(p.y*0.7)){
+            if((e1.getY() - e2.getY())>(p.y*0.6)){
                 finishActivity();
             }else{
 //                layout2.setTranslationY(layout2Y);
@@ -203,14 +204,15 @@ public class CloseAlarmActivity extends Activity{
 //                    bundle.putFloat("y",i);
 //                    msg.setData(bundle);
 //                    mhandler.sendMessage(msg);
-                    setLayoutY(layout2, (int)i);
+                    layout2.setY(i);
+//                    layout2.layout();
 
                     Log.d(MLog.TAG,""+i);
-                    try{
-                        Thread.sleep(10);
-                    }catch (Exception e){
-
-                    }
+//                    try{
+//                        Thread.sleep(10);
+//                    }catch (Exception e){
+//
+//                    }
                 }
                 finishActivity();
             }
@@ -223,13 +225,16 @@ public class CloseAlarmActivity extends Activity{
         stopService(MainFragment.intent);
 
         Date date = new Date();
-        long stopTime = date.getTime();
+        stopTime = date.getTime();
 
         if(stopTime - MainFragment.startTime < 180000){
             Toast.makeText(this,"时间过短",Toast.LENGTH_SHORT).show();
         }else{
 
         }
+
+        Intent intent = new Intent(this,ReportActivity.class);
+        startActivity(intent);
 
         finish();
     }
