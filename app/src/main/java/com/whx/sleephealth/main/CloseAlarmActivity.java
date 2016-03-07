@@ -42,6 +42,8 @@ public class CloseAlarmActivity extends Activity{
     private Point p;
 
     public static long stopTime;
+    boolean flag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +72,7 @@ public class CloseAlarmActivity extends Activity{
 //        layoutParams1 = new RelativeLayout.LayoutParams()
 //        layoutParams2 = layout2.getLayoutParams();
 
-
+        flag = true;
     }
 
     public static void setLayoutY(View view,int y)
@@ -82,6 +84,11 @@ public class CloseAlarmActivity extends Activity{
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+//            case MotionEvent.ACTION_UP:
+//                Log.d(MLog.TAG,"hahaha"+event.getY());
+//                break;
+//        }
         return gestureDetector.onTouchEvent(event);
     }
 
@@ -100,6 +107,8 @@ public class CloseAlarmActivity extends Activity{
 //    public boolean onTouch(View v, MotionEvent event) {
 //        return gestureDetector.onTouchEvent(event);
 //    }
+
+
     private class GestureListener implements GestureDetector.OnGestureListener{
         @Override
         public boolean onDown(MotionEvent e) {
@@ -113,7 +122,7 @@ public class CloseAlarmActivity extends Activity{
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            Log.d(MLog.TAG,"hahaha--"+e.getY());
+            //Log.d(MLog.TAG,"hahaha--"+e.getY());
             return false;
         }
         float a = 1.0f,b = 1.0f;
@@ -137,7 +146,7 @@ public class CloseAlarmActivity extends Activity{
             //向上滑
             if(distanceY>0){
                 digitalClock.setAlpha(a);
-                a = a - 0.009f;
+                a = a - 0.01f;
 
                 if(a<=0){
                     a= 0;
@@ -147,7 +156,7 @@ public class CloseAlarmActivity extends Activity{
                 if(b<=0){
                     b=0;
                 }
-                setLayoutY(layout2, (int) (layout2.getY() - distanceY));
+                layout2.setY(layout2.getY() - distanceY);
                 layout1.setY(layout1.getY() - distanceY / 2);
 
             }else{//向下滑
@@ -155,7 +164,7 @@ public class CloseAlarmActivity extends Activity{
                     layout1.setY(layout1.getY() - distanceY / 2);
 
                     digitalClock.setAlpha(a);
-                    a = a + 0.009f;
+                    a = a + 0.05f;
                     if(a>1){
                         a = 1;
                     }
@@ -167,14 +176,17 @@ public class CloseAlarmActivity extends Activity{
                     }
                 }
                 if(layout2.getY()<layout2Y){
-                    setLayoutY(layout2, (int) (layout2.getY() - distanceY));
+                    layout2.setY(layout2.getY() - distanceY);
                 }
             }
 
 
             //Log.d(MLog.TAG, "p.y = " + (p.y) + " y = " + (e2.getY() - e1.getY()));
             if((e1.getY() - e2.getY())>(p.y*0.6)){
-                finishActivity();
+                if(flag){
+                    finishActivity();
+                }
+                return true;
             }else{
 //                layout2.setTranslationY(layout2Y);
 //                //layout2.setAnimation();
@@ -184,7 +196,7 @@ public class CloseAlarmActivity extends Activity{
 //                layout2.setY(layout2Y);
 
             }
-            return false;
+            return true;
         }
 
         @Override
@@ -205,16 +217,17 @@ public class CloseAlarmActivity extends Activity{
 //                    msg.setData(bundle);
 //                    mhandler.sendMessage(msg);
                     layout2.setY(i);
-//                    layout2.layout();
 
-                    Log.d(MLog.TAG,""+i);
+//                    Log.d(MLog.TAG,""+i);
 //                    try{
 //                        Thread.sleep(10);
 //                    }catch (Exception e){
 //
 //                    }
                 }
-                finishActivity();
+                if(flag){
+                    finishActivity();
+                }
             }
             return true;
         }
@@ -227,16 +240,22 @@ public class CloseAlarmActivity extends Activity{
         Date date = new Date();
         stopTime = date.getTime();
 
-        if(stopTime - MainFragment.startTime < 180000){
-            Toast.makeText(this,"时间过短",Toast.LENGTH_SHORT).show();
-        }else{
+        flag = false;
 
+        if(stopTime - MainFragment.startTime < 180000){
+            Toast.makeText(this,"时间过短,已取消此次活动",Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this,ReportActivity.class);
+            startActivity(intent);
+
+            finish();
+        }else{
+            Intent intent = new Intent(this,ReportActivity.class);
+            startActivity(intent);
+
+            finish();
         }
 
-        Intent intent = new Intent(this,ReportActivity.class);
-        startActivity(intent);
-
-        finish();
     }
     Handler mhandler = new Handler(){
         @Override

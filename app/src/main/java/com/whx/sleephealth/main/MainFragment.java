@@ -58,11 +58,7 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
         alarmText.setText(AlarmText);
     }
 
-    private float getSleepLength(){
-        float x = 8*60;
 
-        return x;
-    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
