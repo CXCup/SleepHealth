@@ -239,6 +239,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
             <Button
+                android:id="@+id/btn_sug"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_back"

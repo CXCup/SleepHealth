@@ -6,66 +6,14 @@
 
     <include
         layout="@layout/actionbar"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#e2e2e2">
-            <ImageView
-                android:layout_width="2dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:scaleType="fitXY"
-                android:src="@mipmap/xian"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:text="食物"
-                android:textSize="30sp"/>
-        </LinearLayout>
-        <ListView
-            android:id="@+id/s_food_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"></ListView>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="#e2e2e2">
-            <ImageView
-                android:layout_width="2dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:scaleType="fitXY"
-                android:src="@mipmap/xian"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="运动"
-                android:layout_marginLeft="15dp"
-                android:textSize="30sp"/>
-        </LinearLayout>
-        <ListView
-            android:id="@+id/s_sports_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
 
-        </ListView>
-    </LinearLayout>
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webview1">
+
+    </WebView>
+
+
+
 </LinearLayout>
