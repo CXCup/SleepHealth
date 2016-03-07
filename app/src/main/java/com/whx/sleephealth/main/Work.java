@@ -99,7 +99,7 @@ public class Work extends TimerTask implements SensorEventListener {
                 Log.d("--------------", "accs[0]=" + accs[0] + " accs[1]=" + accs[1]);
 
                 if(Math.abs(accs[1] - accs[0]) < 0.15f){
-                    //Log.d("--------------","times[0]="+times[0]+" times[1]="+times[1]);
+                    Log.d("--------------","times[0]="+times[0]+" times[1]="+times[1]);
 
                     if(Math.abs(times[1] - times[0]) < 180000){
                         isSleep = true;
