@@ -14,6 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.DigitalClock;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -210,21 +213,29 @@ public class CloseAlarmActivity extends Activity{
             if((0-velocityY)>2000){
                 //Log.d(MLog.TAG, e2.getY() + "");
 
-                for(float i = e2.getY();i>0;i = i - 1f){
-//                    Message msg = new Message();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putFloat("y",i);
-//                    msg.setData(bundle);
-//                    mhandler.sendMessage(msg);
-                    layout2.setY(i);
+                AnimationSet animationSet = new AnimationSet(true);
+                TranslateAnimation translateAnimation = new TranslateAnimation(Animation.ABSOLUTE,layout2.getX(),
+                        Animation.ABSOLUTE,layout2.getX(),Animation.ABSOLUTE,layout2Y,Animation.ABSOLUTE,10f);
+                translateAnimation.setDuration(5000);
+                animationSet.addAnimation(translateAnimation);
 
-//                    Log.d(MLog.TAG,""+i);
-//                    try{
-//                        Thread.sleep(10);
-//                    }catch (Exception e){
+                layout2.startAnimation(animationSet);
+
+//                final float e = e2.getY();
+//                new Thread(){
+//                    @Override
+//                    public void run() {
+//                        for(float i = e;i>0;i = i - 0.1f) {
+//                            Message msg = new Message();
+//                            Bundle bundle = new Bundle();
+//                            bundle.putFloat("y", i);
+//                            msg.setData(bundle);
+//                            mhandler.sendMessage(msg);
+//                        }
 //
 //                    }
-                }
+//                }.start();
+
                 if(flag){
                     finishActivity();
                 }
@@ -245,8 +256,8 @@ public class CloseAlarmActivity extends Activity{
         if(stopTime - MainFragment.startTime < 180000){
             Toast.makeText(this,"时间过短,已取消此次活动",Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this,ReportActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this,ReportActivity.class);
+//            startActivity(intent);
 
             finish();
         }else{

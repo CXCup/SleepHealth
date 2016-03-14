@@ -1,5 +1,9 @@
 package com.whx.sleephealth.main;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -29,6 +33,7 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
     private Button startBtn;
     private TimePicker timePicker;
     private int startMin,endMin,startHour,endHour;
+    private AlarmManager alarmManager1,alarmManager2;
 
     public static String AlarmText;
     public static Intent intent;
@@ -56,6 +61,9 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
         getAlarmtext(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
         AlarmText = "闹钟："+ startHour +" : "+startMin+" - "+endHour+" : "+endMin;
         alarmText.setText(AlarmText);
+
+        alarmManager1 = (AlarmManager)getActivity().getSystemService(Service.ALARM_SERVICE);
+        alarmManager2 = (AlarmManager)getActivity().getSystemService(Service.ALARM_SERVICE);
     }
 
 
@@ -68,6 +76,11 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
 
                 intent = new Intent(getContext(),SleepTimeService.class);
                 getActivity().startService(intent);
+
+//                Intent alarmIntent = new Intent(getActivity(),AlarmActivity.class);
+//
+//                PendingIntent pi = PendingIntent.getActivity(getActivity(),0,alarmIntent,0);
+//                alarmManager1.set(AlarmManager.RTC_WAKEUP,startTime,pi);
 
                 Intent intent1 = new Intent(getActivity(),CloseAlarmActivity.class);
                 startActivity(intent1);
@@ -85,19 +98,14 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
         alarmText.setText(AlarmText);
     }
     private void getAlarmtext(int hourOfDay,int minute){
-        if(minute<10){
-            startMin = minute + 50;
-            endMin = minute + 10;
+        if(minute<30){
+            startMin = minute + 30;
+            endMin = minute;
             startHour = hourOfDay -1;
             endHour = hourOfDay;
-        }else if(minute >= 50){
-            startMin = minute - 10;
-            endMin = minute - 50;
-            startHour = hourOfDay;
-            endHour = hourOfDay + 1;
         }else{
-            startMin = minute - 10;
-            endMin = minute + 10;
+            startMin = minute - 30;
+            endMin = minute;
             startHour = hourOfDay;
             endHour = hourOfDay;
         }

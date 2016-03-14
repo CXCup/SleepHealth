@@ -30,7 +30,7 @@ public class Work extends TimerTask implements SensorEventListener {
 
     private float[] accs = new float[2];
     private long[] times = new long[2];
-    private List<Date> time;
+    public static List<Date> time,wakeTime;
 
     private boolean isSleep = true;
     private int initAcc = 1;
@@ -42,6 +42,7 @@ public class Work extends TimerTask implements SensorEventListener {
         this.mContext = context;
 
         time = new ArrayList<>();
+        wakeTime = new ArrayList<>();
     }
 
     Handler handler = new Handler(){
@@ -98,7 +99,7 @@ public class Work extends TimerTask implements SensorEventListener {
 
                 Log.d("--------------", "accs[0]=" + accs[0] + " accs[1]=" + accs[1]);
 
-                if(Math.abs(accs[1] - accs[0]) < 0.15f){
+                if(Math.abs(accs[1] - accs[0]) < 0.154f){
                     Log.d("--------------","times[0]="+times[0]+" times[1]="+times[1]);
 
                     if(Math.abs(times[1] - times[0]) < 180000){
@@ -118,8 +119,10 @@ public class Work extends TimerTask implements SensorEventListener {
 
                             String t = formatter.format(endDate);
                             raf.write(("user is sleeping and time is " + t).getBytes());
+
+                            isSleep = false;
                         }
-                        isSleep = false;
+
 
                         //Log.d("----------","user is sleeping and time is "+t);
                     }
@@ -129,17 +132,15 @@ public class Work extends TimerTask implements SensorEventListener {
                     //Log.d("--------------","times[0]="+times[0]+" times[1]="+times[1]);
 
                     if(Math.abs(times[1] - times[0]) < 180000){
-                        isSleep = true;
+                        //isSleep = true;
                         raf.write("user is awaking".getBytes());
                         //Log.d("----------","user is awaking");
                     }else{
-//                        isSleep = true;
-
-//                        time = times[0]+300000;
-                        //Date date = new Date(times[1]);
+                        isSleep = true;
 
                         String time_s = formatter.format(endDate);
 
+                        wakeTime.add(endDate);
                         raf.write(("user is sleeping and time is " + time_s).getBytes());
                         //Log.d("----------","user is sleeping and time is "+time);
                     }

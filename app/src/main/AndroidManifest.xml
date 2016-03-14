@@ -28,6 +28,8 @@
         <activity android:name=".mine.ChartActivity"/>
         <activity android:name=".main.CloseAlarmActivity"/>
         <activity android:name=".main.ReportActivity"/>
+        <activity android:name=".mine.HelpItemActivity"/>
+        <activity android:name=".main.AlarmActivity"/>
 
         <service android:name=".main.SleepTimeService"/>
     </application>
