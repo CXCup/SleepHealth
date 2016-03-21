@@ -19,7 +19,7 @@ public class AlarmActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.close_alarm);
+        setContentView(R.layout.activity_alarm);
 
         alarlmPlayer = MediaPlayer.create(this,R.raw.alarm02);
         alarlmPlayer.setLooping(true);

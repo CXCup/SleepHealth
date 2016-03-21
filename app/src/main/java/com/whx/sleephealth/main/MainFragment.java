@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 import com.whx.sleephealth.R;
 import com.whx.sleephealth.tieshi.MLog;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -77,10 +78,17 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
                 intent = new Intent(getContext(),SleepTimeService.class);
                 getActivity().startService(intent);
 
-//                Intent alarmIntent = new Intent(getActivity(),AlarmActivity.class);
-//
-//                PendingIntent pi = PendingIntent.getActivity(getActivity(),0,alarmIntent,0);
-//                alarmManager1.set(AlarmManager.RTC_WAKEUP,startTime,pi);
+                Intent alarmIntent = new Intent(getContext(),AlarmActivity.class);
+
+                Calendar c = Calendar.getInstance();
+                //c.setTimeInMillis(System.currentTimeMillis());
+                c.set(Calendar.HOUR, startHour);
+                c.set(Calendar.MINUTE,endMin);
+
+                PendingIntent pi = PendingIntent.getActivity(getContext(),0,alarmIntent,0);
+                alarmManager1.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pi);
+
+//                Log.d(MLog.TAG,(c.getTimeInMillis()-startTime)+"   ");
 
                 Intent intent1 = new Intent(getActivity(),CloseAlarmActivity.class);
                 startActivity(intent1);

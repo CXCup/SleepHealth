@@ -26,7 +26,10 @@ import android.widget.Toast;
 import com.whx.sleephealth.R;
 import com.whx.sleephealth.tieshi.MLog;
 
+import java.io.File;
+import java.io.RandomAccessFile;
 import java.util.Date;
+import java.util.Set;
 
 
 /**
@@ -47,6 +50,20 @@ public class CloseAlarmActivity extends Activity{
     public static long stopTime;
     boolean flag;
 
+    //0是睡，1是醒
+    int[] states = {0,1};
+    int[] obs1;
+
+    double[] start_p = {0,1};
+
+    double[][] trans_p = {
+            {0.8431,0.1569},
+            {0.4380,0.5620}
+    };
+    double[][] emit_p = {
+            {0.2,0.8},
+            {0.8,0.2}
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,6 +204,7 @@ public class CloseAlarmActivity extends Activity{
             //Log.d(MLog.TAG, "p.y = " + (p.y) + " y = " + (e2.getY() - e1.getY()));
             if((e1.getY() - e2.getY())>(p.y*0.6)){
                 if(flag){
+                    test();
                     finishActivity();
                 }
                 return true;
@@ -216,7 +234,7 @@ public class CloseAlarmActivity extends Activity{
                 AnimationSet animationSet = new AnimationSet(true);
                 TranslateAnimation translateAnimation = new TranslateAnimation(Animation.ABSOLUTE,layout2.getX(),
                         Animation.ABSOLUTE,layout2.getX(),Animation.ABSOLUTE,layout2Y,Animation.ABSOLUTE,10f);
-                translateAnimation.setDuration(5000);
+                translateAnimation.setDuration(3000);
                 animationSet.addAnimation(translateAnimation);
 
                 layout2.startAnimation(animationSet);
@@ -237,6 +255,7 @@ public class CloseAlarmActivity extends Activity{
 //                }.start();
 
                 if(flag){
+                    test();
                     finishActivity();
                 }
             }
@@ -279,4 +298,64 @@ public class CloseAlarmActivity extends Activity{
         }
     };
 
+    int sleepCount=0,wakeCount=0;
+
+    private void test(){
+        obs1 = new int[Work.obs.size()];
+        for(int i=0;i<Work.obs.size();i++){
+//            Log.d(MLog.TAG,""+Work.obs.get(i));
+
+            obs1[i] = Work.obs.get(i);
+        }
+        int[] s;
+        s = Viterbi.compute(obs1,states,start_p,trans_p,emit_p);
+
+        int j = 0;
+        Set<String> keys = Work.obs0.keySet();
+
+        for (String ss :keys){
+            Work.obs0.put(ss,s[j++]);
+        }
+
+        //将结果写入到文件
+        try{
+            File file = new File(SleepTimeService.file);
+            RandomAccessFile raf = new RandomAccessFile(file,"rw");
+            raf.seek(file.length());
+
+            raf.writeChars(Work.obs0+"");
+
+        }catch (Exception e){
+            Log.d(MLog.TAG,e.getMessage());
+        }
+        //打印结果
+        for (int i : s){
+            if(0 == i){
+                sleepCount ++;
+            }else{
+                wakeCount ++;
+            }
+        }
+        Log.d(MLog.TAG,"sleep is "+(int)((float)sleepCount/s.length*100)+"%");
+    }
+    public void method(float[] accurs){
+        int i,j,len;
+        len = accurs.length;
+
+        float[] amods = new float[len];
+        i = 0;
+        while (i<len){
+            if(i>3 && i<len-5){
+                amods[i] = 0.04f*accurs[i-4] + 0.04f*accurs[i-3] + 0.2f*accurs[i-2] + 0.2f*accurs[i-1] +
+                        2f*accurs[i] + 0.2f*accurs[i+1] + 0.2f*accurs[i+2] + 0.04f*accurs[i+3] +
+                        0.04f*accurs[i+4];
+            }else{
+                amods[i] = accurs[i];
+            }
+            i++;
+        }
+        for(int k = 0;k<amods.length;k++){
+            Log.d(MLog.TAG,"amods --> "+amods[k]);
+        }
+    }
 }
