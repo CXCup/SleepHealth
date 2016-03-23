@@ -16,8 +16,8 @@ import com.whx.sleephealth.R;
  */
 public class MyAdapter extends BaseAdapter{
 
-    private int[] imagesRes = {R.mipmap.chart,R.mipmap.help};
-    private String[] texts = {"睡眠记录","帮助睡眠"};
+    private int[] imagesRes = {R.mipmap.chart,R.mipmap.ic_list,R.mipmap.help};
+    private String[] texts = {"统计数据","日志记录","帮助睡眠"};
     private Context mContext;
 
     public MyAdapter(Context mContext){
@@ -25,7 +25,7 @@ public class MyAdapter extends BaseAdapter{
     }
     @Override
     public int getCount() {
-        return 2;
+        return texts.length;
     }
 
     @Override

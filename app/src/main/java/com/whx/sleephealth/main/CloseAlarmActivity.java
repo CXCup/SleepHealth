@@ -50,20 +50,7 @@ public class CloseAlarmActivity extends Activity{
     public static long stopTime;
     boolean flag;
 
-    //0是睡，1是醒
-    int[] states = {0,1};
-    int[] obs1;
 
-    double[] start_p = {0,1};
-
-    double[][] trans_p = {
-            {0.8431,0.1569},
-            {0.4380,0.5620}
-    };
-    double[][] emit_p = {
-            {0.2,0.8},
-            {0.8,0.2}
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,7 +191,7 @@ public class CloseAlarmActivity extends Activity{
             //Log.d(MLog.TAG, "p.y = " + (p.y) + " y = " + (e2.getY() - e1.getY()));
             if((e1.getY() - e2.getY())>(p.y*0.6)){
                 if(flag){
-                    test();
+
                     finishActivity();
                 }
                 return true;
@@ -255,7 +242,6 @@ public class CloseAlarmActivity extends Activity{
 //                }.start();
 
                 if(flag){
-                    test();
                     finishActivity();
                 }
             }
@@ -281,6 +267,7 @@ public class CloseAlarmActivity extends Activity{
             finish();
         }else{
             Intent intent = new Intent(this,ReportActivity.class);
+            intent.setFlags(1);
             startActivity(intent);
 
             finish();
@@ -298,46 +285,7 @@ public class CloseAlarmActivity extends Activity{
         }
     };
 
-    int sleepCount=0,wakeCount=0;
 
-    private void test(){
-        obs1 = new int[Work.obs.size()];
-        for(int i=0;i<Work.obs.size();i++){
-//            Log.d(MLog.TAG,""+Work.obs.get(i));
-
-            obs1[i] = Work.obs.get(i);
-        }
-        int[] s;
-        s = Viterbi.compute(obs1,states,start_p,trans_p,emit_p);
-
-        int j = 0;
-        Set<String> keys = Work.obs0.keySet();
-
-        for (String ss :keys){
-            Work.obs0.put(ss,s[j++]);
-        }
-
-        //将结果写入到文件
-        try{
-            File file = new File(SleepTimeService.file);
-            RandomAccessFile raf = new RandomAccessFile(file,"rw");
-            raf.seek(file.length());
-
-            raf.writeChars(Work.obs0+"");
-
-        }catch (Exception e){
-            Log.d(MLog.TAG,e.getMessage());
-        }
-        //打印结果
-        for (int i : s){
-            if(0 == i){
-                sleepCount ++;
-            }else{
-                wakeCount ++;
-            }
-        }
-        Log.d(MLog.TAG,"sleep is "+(int)((float)sleepCount/s.length*100)+"%");
-    }
     public void method(float[] accurs){
         int i,j,len;
         len = accurs.length;

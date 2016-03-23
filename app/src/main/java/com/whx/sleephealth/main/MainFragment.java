@@ -57,6 +57,7 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
 
         timePicker = (TimePicker)view.findViewById(R.id.alarm_time);
         timePicker.setIs24HourView(true);
+        timePicker.setCurrentHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         timePicker.setOnTimeChangedListener(this);
 
         getAlarmtext(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
