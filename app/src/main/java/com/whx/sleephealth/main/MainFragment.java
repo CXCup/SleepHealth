@@ -111,6 +111,9 @@ public class MainFragment extends Fragment implements View.OnClickListener,TimeP
             startMin = minute + 30;
             endMin = minute;
             startHour = hourOfDay -1;
+            if(startHour<0){
+                startHour = 23;
+            }
             endHour = hourOfDay;
         }else{
             startMin = minute - 30;

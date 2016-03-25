@@ -9,6 +9,17 @@ public class RecordListItem {
     private String timelong;
     private String eff;
 
+    private long lstart;
+
+    public long getLstart() {
+        return lstart;
+    }
+
+    public void setLstart(long lstart) {
+        this.lstart = lstart;
+    }
+
+
     public String getTimelong() {
         return timelong;
     }

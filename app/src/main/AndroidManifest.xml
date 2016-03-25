@@ -30,6 +30,7 @@
         <activity android:name=".main.ReportActivity"/>
         <activity android:name=".mine.HelpItemActivity"/>
         <activity android:name=".main.AlarmActivity"/>
+        <activity android:name=".mine.RecordActivity"/>
 
         <service android:name=".main.SleepTimeService"/>
     </application>

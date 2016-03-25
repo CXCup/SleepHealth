@@ -47,6 +47,8 @@ public class MineFragment extends Fragment{
                         startActivity(mChart);
                         break;
                     case 1:
+                        Intent mRecord = new Intent(getActivity(),RecordActivity.class);
+                        startActivity(mRecord);
                         break;
                     case 2:
                         Intent mHelp = new Intent(getActivity(),HelpItemActivity.class);

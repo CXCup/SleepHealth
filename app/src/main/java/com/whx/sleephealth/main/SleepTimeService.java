@@ -35,7 +35,7 @@ public class SleepTimeService extends Service{
         super.onCreate();
         timer = new Timer();
         //每隔两秒执行一次
-        timer.schedule(new Work(this),0,60000);
+        timer.schedule(new Work(this),0,2000);
 
         try {
             file = Environment.getExternalStorageDirectory().getCanonicalPath() + "/test.txt";

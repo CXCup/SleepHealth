@@ -15,11 +15,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ListView
+        <com.whx.sleephealth.mine.SwipeMenuListView
             android:id="@+id/record_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:divider="@null">
 
-        </ListView>
+        </com.whx.sleephealth.mine.SwipeMenuListView>
     </LinearLayout>
+
 </LinearLayout>

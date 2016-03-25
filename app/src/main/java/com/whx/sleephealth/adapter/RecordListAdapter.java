@@ -64,12 +64,13 @@ public class RecordListAdapter extends BaseAdapter{
         holder.time.setText(datas.get(position).getTimelong());
         holder.eff.setText(datas.get(position).getEff());
 
+        holder.lstart = datas.get(position).getLstart();
+
         return convertView;
     }
-    private class MHolder{
-        public TextView date;
-        public TextView startTime;
-        public TextView time;
-        public TextView eff;
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

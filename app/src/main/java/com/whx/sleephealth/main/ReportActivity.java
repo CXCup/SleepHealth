@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import com.whx.sleephealth.tieshi.MLog;
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 
@@ -34,9 +36,10 @@ public class ReportActivity extends Activity{
     private Button btn_sug,awakeTimeBrn,lightTime,deepTime;
     private TextView efficiencyText,awakeText,lightText,deepText,awakeTime,sleepTime,totoalTime;
 
-    private int eff,sleep_min,awake_min,total;
+    private int eff,light_min,deep_min,awake_min,total;
+    SQLHelper helper = new SQLHelper(this,"my_record.db3",1);
 
-    private int step = 1;
+    private int step = 30;
 
     //0是睡，1是醒
     private int[] states = {0,1};
@@ -103,6 +106,26 @@ public class ReportActivity extends Activity{
                     test();
                 }
             }.start();
+        }else if(getIntent().getFlags() == 2){
+
+            Cursor cursor = helper.getReadableDatabase().rawQuery("select * from record where" +
+                    " date= ? and start_time=?", new String[]{getIntent().getStringExtra("date"),
+                    getIntent().getLongExtra("start", 1) + ""});
+
+            cursor.moveToNext();
+
+            //Log.d(MLog.TAG,cursor+"");
+
+            long start = cursor.getLong(2);
+            long end = cursor.getLong(3);
+            int total = cursor.getInt(4);
+            int eff = cursor.getInt(5);
+            int sleep = cursor.getInt(6);
+            int wake = cursor.getInt(7);
+            int light = cursor.getInt(8);
+            int deep = cursor.getInt(9);
+
+            setValues(start,end,total,sleep,wake,eff,light,deep);
         }
 
     }
@@ -124,21 +147,31 @@ public class ReportActivity extends Activity{
 
         totoalTime.setText(s1+"-"+s2);
 
-        sleepTime.setText(sleep_min / 60 + " h " + sleep_min % 60 + " min");
-        awakeTime.setText(awake_min/60 +" h "+awake_min%60+" min");
+        if(sleep_min>60){
+            sleepTime.setText(sleep_min / 60 + " h " + sleep_min % 60 + " min");
+        }else{
+            sleepTime.setText(sleep_min+ " min");
+        }
+
+        if(total_min>60){
+            awakeTime.setText(total_min/60 +" h "+total_min%60+" min");
+        }else{
+            awakeTime.setText(total_min+" min");
+        }
 
         if(awake_min>60){
             awakeTimeBrn.setText(awake_min/60 +"h"+awake_min%60+"min");
         }else{
-            awakeTimeBrn.setText(awake_min%60+"min");
+            awakeTimeBrn.setText(awake_min+"min");
         }
+
         awakeProgressBar.setProgress((int) ((float) awake_min / total_min * 100));
         awakeText.setText((int) ((float) awake_min / total_min * 100) + "%");
 
         if(light>60){
             lightTime.setText(light/60 +"h"+light%60+"min");
         }else{
-            lightTime.setText(light%60+"min");
+            lightTime.setText(light+"min");
         }
         lightSleepBar.setProgress((int) ((float) light / total_min * 100));
         lightText.setText((int) ((float) light/total_min*100)+"%");
@@ -146,14 +179,12 @@ public class ReportActivity extends Activity{
         if(deep>60){
             deepTime.setText(deep/60 +"h"+deep%60+"min");
         }else{
-            deepTime.setText(deep%60+"min");
+            deepTime.setText(deep+"min");
         }
         deepSleepBar.setProgress((int)((float)deep/total_min*100));
         deepText.setText((int) ((float) deep/total_min*100)+"%");
 
     }
-
-    int sleepCount=0,wakeCount=0;
 
 //    private class MReceiver extends BroadcastReceiver{
 //        @Override
@@ -162,6 +193,8 @@ public class ReportActivity extends Activity{
 //        }
 //    }
     private void test(){
+
+
         obs1 = new int[Work.obs.size()];
         for(int i=0;i<Work.obs.size();i++){
 //            Log.d(MLog.TAG,""+Work.obs.get(i));
@@ -189,38 +222,73 @@ public class ReportActivity extends Activity{
         }catch (Exception e){
             Log.d(MLog.TAG,e.getMessage());
         }
-        //打印结果
-        for (int i : s){
-            if(0 == i){
-                sleepCount ++;
-            }else{
-                wakeCount ++;
+
+        int[] sub;
+        for(int i = 0;i<s.length;i+=step){
+            sub = Arrays.copyOfRange(s,i,i+step);
+            switch (state(sub)){
+                case 0:
+                    deep_min++;
+                    break;
+                case 1:
+                    light_min++;
+                    break;
+                case 2:
+                    awake_min++;
+                    break;
             }
         }
-        total = s.length;
-        eff = (int)((float)sleepCount/total*100);
-        sleep_min = sleepCount/step;
-        awake_min = wakeCount/step;
+        total = deep_min+light_min+awake_min;
+        eff = (int)((float)(deep_min+light_min)/total*100);
+//        sleep_min = sleepCount/step;
+//        awake_min = wakeCount/step;
 
-        Log.d(MLog.TAG,"sleep is "+eff+"%");
+        Log.d(MLog.TAG, "sleep is " + eff + "%");
 
         handler.sendEmptyMessage(1);
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        Date d1 = new Date(MainFragment.startTime);
+        String date = simpleDateFormat.format(d1);
 
+        //保存至数据库
+        helper.insert(helper.getReadableDatabase(),date,MainFragment.startTime,
+                CloseAlarmActivity.stopTime,total,eff,deep_min+light_min,awake_min,
+                light_min,deep_min);
     }
 
+    private int state(int[] arry){
+        int num_1=0,num_0=0;
+        for(int i:arry){
+            if(1 == i){
+                num_1++;
+            }else{
+                num_0++;
+            }
+        }
+        if(num_1>=5){
+            return 2;
+        }else if(num_1<5&&num_1>0){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(1 == msg.what){
-                setValues(MainFragment.startTime,CloseAlarmActivity.stopTime,(sleep_min+awake_min),
-                        sleep_min,awake_min,eff,(int)(total*0.6),(int)(total*0.3));
+                setValues(MainFragment.startTime,CloseAlarmActivity.stopTime,total,
+                        deep_min+light_min,awake_min,eff,light_min,deep_min);
             }
         }
     };
     @Override
     protected void onDestroy() {
 
+        if(helper != null){
+            helper.close();
+        }
         //unregisterReceiver(receiver);
         super.onDestroy();
     }
