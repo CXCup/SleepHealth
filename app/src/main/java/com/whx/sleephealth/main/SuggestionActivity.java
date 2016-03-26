@@ -2,6 +2,7 @@ package com.whx.sleephealth.main;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.whx.sleephealth.R;
 import com.whx.sleephealth.adapter.ListViewAdapter;
+import com.whx.sleephealth.tieshi.MLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +44,9 @@ public class SuggestionActivity extends Activity {
         //设置webview属性
         webview.getSettings().setJavaScriptEnabled(true);
         //加载需要显示的页面
+
+        Log.d(MLog.TAG,url);
+
         webview.loadUrl(url);
         //设置webview视图
         webview.setWebViewClient(new HelloWebViewClient());

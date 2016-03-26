@@ -105,13 +105,14 @@ public class ReportActivity extends Activity{
 
 
                 Map<String,String> params = new HashMap<>();
-                params.put("sleepTime",sleepTime+"");
+                params.put("sleepTime",(light_min+deep_min)+"");
                 params.put("lightTime", light_min + "");
                 params.put("deepTime", deep_min + "");
 
+                //Log.d(MLog.TAG,(light_min+deep_min)+"");
                 String url;
                 try{
-                   url =  HttpUtil.postRequest("",params);
+                   url =  HttpUtil.postRequest("http://114.215.84.64:8080/SleepHealth/suggestion.php",params);
                 }catch (Exception e){
                     url = "what the fuck";
                     Log.d(MLog.TAG,e.getMessage());
@@ -146,14 +147,14 @@ public class ReportActivity extends Activity{
 
             long start = cursor.getLong(2);
             long end = cursor.getLong(3);
-            int total = cursor.getInt(4);
-            int eff = cursor.getInt(5);
+            total = cursor.getInt(4);
+            eff = cursor.getInt(5);
             int sleep = cursor.getInt(6);
-            int wake = cursor.getInt(7);
-            int light = cursor.getInt(8);
-            int deep = cursor.getInt(9);
+            awake_min = cursor.getInt(7);
+            light_min = cursor.getInt(8);
+            deep_min = cursor.getInt(9);
 
-            setValues(start,end,total,sleep,wake,eff,light,deep);
+            setValues(start,end,total,sleep,awake_min,eff,light_min,deep_min);
         }
 
     }
