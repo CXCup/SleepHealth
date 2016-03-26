@@ -13,6 +13,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:textSize="15sp"
+            android:textColor="#1b1b1b"
             android:text="11月11日"/>
     </LinearLayout>
     <RelativeLayout
@@ -24,12 +26,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:textColor="#ffffff"
             android:text="23:59"/>
         <TextView
             android:id="@+id/sleep_long"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:textColor="#ffffff"
             android:text="12 h 24 min"/>
         <TextView
             android:id="@+id/efficiency"
@@ -37,12 +41,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
+            android:textColor="#ffffff"
             android:text="25%"/>
 
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:layout_marginTop="10dp"
-        android:textColor="#c4c4c4"/>
+        android:layout_marginTop="7dp"
+        android:textSize="30sp"
+        android:background="#878585"/>
 </LinearLayout>

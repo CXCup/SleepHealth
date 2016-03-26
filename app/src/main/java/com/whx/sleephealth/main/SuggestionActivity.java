@@ -26,6 +26,8 @@ public class SuggestionActivity extends Activity {
     private TextView title;
     public WebView webview;
 
+    private String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +36,13 @@ public class SuggestionActivity extends Activity {
         title = (TextView) findViewById(R.id.title);
         title.setText("建议");
 
+        url = getIntent().getStringExtra("param");
+
         webview = (WebView) findViewById(R.id.webview1);
         //设置webview属性
         webview.getSettings().setJavaScriptEnabled(true);
         //加载需要显示的页面
-        webview.loadUrl("http://www.51cto.com/");
+        webview.loadUrl(url);
         //设置webview视图
         webview.setWebViewClient(new HelloWebViewClient());
 

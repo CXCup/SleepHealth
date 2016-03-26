@@ -16,14 +16,26 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.whx.sleephealth.HttpUtil;
+import com.whx.sleephealth.HttpUtils;
 import com.whx.sleephealth.R;
 import com.whx.sleephealth.tieshi.MLog;
 
+import org.apache.http.Header;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -90,8 +102,24 @@ public class ReportActivity extends Activity{
         btn_sug.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                Map<String,String> params = new HashMap<>();
+                params.put("sleepTime",sleepTime+"");
+                params.put("lightTime", light_min + "");
+                params.put("deepTime", deep_min + "");
+
+                String url;
+                try{
+                   url =  HttpUtil.postRequest("",params);
+                }catch (Exception e){
+                    url = "what the fuck";
+                    Log.d(MLog.TAG,e.getMessage());
+                }
+
                 Intent intent = new Intent();
                 intent.setClass(ReportActivity.this,SuggestionActivity.class);
+                intent.putExtra("param",url);
                 ReportActivity.this.startActivity(intent);
             }
         });
@@ -237,6 +265,7 @@ public class ReportActivity extends Activity{
                     awake_min++;
                     break;
             }
+            Log.d(MLog.TAG,sub.length+"");
         }
         total = deep_min+light_min+awake_min;
         eff = (int)((float)(deep_min+light_min)/total*100);
