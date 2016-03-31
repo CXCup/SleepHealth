@@ -233,12 +233,12 @@ public class ReportActivity extends Activity{
         int[] s;
         s = Viterbi.compute(obs1,states,start_p,trans_p,emit_p);
 
-        int j = 0;
-        Set<String> keys = Work.obs0.keySet();
-
-        for (String ss :keys){
-            Work.obs0.put(ss,s[j++]);
-        }
+//        int j = 0;
+//        Set<String> keys = Work.obs0.keySet();
+//
+//        for (String ss :keys){
+//            Work.obs0.put(ss,s[j++]);
+//        }
 
         //将结果写入到文件
         try{
@@ -266,7 +266,7 @@ public class ReportActivity extends Activity{
                     awake_min++;
                     break;
             }
-            Log.d(MLog.TAG,sub.length+"");
+            //Log.d(MLog.TAG,sub.length+"");
         }
         total = deep_min+light_min+awake_min;
         eff = (int)((float)(deep_min+light_min)/total*100);

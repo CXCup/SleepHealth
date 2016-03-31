@@ -52,15 +52,15 @@ public class RecordActivity extends Activity implements AdapterView.OnItemClickL
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(int position, SwipeMenu menu, int index) {
-                switch (index){
+                switch (index) {
                     case 0:
 
                         boolean b = helper.delete(helper.getReadableDatabase(), (items.get(position)).getDate(),
                                 (items.get(position)).getLstart());
-                        if(b){
-                            Toast.makeText(RecordActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(RecordActivity.this,"删除失败",Toast.LENGTH_SHORT).show();
+                        if (b) {
+                            Toast.makeText(RecordActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RecordActivity.this, "删除失败", Toast.LENGTH_SHORT).show();
                         }
                         items.remove(position);
                         adapter.notifyDataSetChanged();
